@@ -104,7 +104,7 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return age.equals (person.age)
+        return age == (person.age.intValue())
             && lastName.equals (person.lastName)
             && firstName.equals (person.firstName)
             && middleName.equals (person.middleName)
