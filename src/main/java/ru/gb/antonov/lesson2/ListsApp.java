@@ -5,10 +5,21 @@ import static ru.gb.antonov.Library.*;
 import ru.gb.antonov.lesson2.exercise1.MyLinkedList;
 import ru.gb.antonov.lesson2.exercise2.MyArrayList;
 
+import java.util.LinkedList;
+import java.util.Random;
+
 public class ListsApp {
 
+    static final boolean ADD_TO_MIDDLE_TEST = true;
+
     public static void main (String[] args) {
-        MyArrayList<Integer> al = new MyArrayList<>(1);
+        MyLinkedList<Integer> ll = new MyLinkedList<>();
+        //generalMyArrayListTest (new MyArrayList<>(1));
+        //generalMyLinkedListTest (ll);
+        testIntAddition (100_000, ll, new LinkedList<>(), ADD_TO_MIDDLE_TEST);
+    }
+
+    static void generalMyArrayListTest (MyArrayList<Integer> al) {
         lnprint (al.toString());
         al.add(0);
         lnprint (al.toString());
@@ -34,22 +45,22 @@ public class ListsApp {
         lnprint (al.toString());
         al.clear();
         lnprint ("clear() -> "+ al.toString());
-
         lnprint("--------------------------------");
+    }
 
-        MyLinkedList<Integer> ll = new MyLinkedList<>();
+    static void generalMyLinkedListTest (MyLinkedList<Integer> ll) {
         lnprint (ll.toString());
         for (int i=0; i<8; i++)
             ll.add(i);
         ll.add(null);
         lnprint (ll.toString());
         ll.add(0,5);
-        ll.add(ll.size(),6);
-        ll.add(ll.size()/2,7);
+        ll.add(ll.size(),16);
+        ll.add(ll.size()/2,17);
         lnprint (ll.toString());
         ll.set(0, 6);
-        ll.set(ll.size()/2, 5);
-        ll.set(ll.size()-1, 8);
+        ll.set(ll.size()/2, 45);
+        ll.set(ll.size()-1, 48);
         lnprint (ll.toString());
         lnprint (""+ll.get(0));
         lnprint (""+ll.get(ll.size()/2));
@@ -60,11 +71,11 @@ public class ListsApp {
         lnprint ("contains 8 = "+ll.contains(8));
         lnprint ("contains 15 = "+ll.contains(15));
         ll.removeAt (ll.size()-1);
-        lnprint (ll.toString());
+        lnprint ("ll.removeAt (ll.size()-1) - "+ll.toString());
         ll.removeAt (ll.size()/2);
-        lnprint (ll.toString());
+        lnprint ("ll.removeAt (ll.size()/2) - "+ll.toString());
         ll.removeAt (0);
-        lnprint (ll.toString());
+        lnprint ("ll.removeAt (0) - "+ll.toString());
         lnprint ("remove (0) = "+ ll.remove (0));
         lnprint ("remove (15)= "+ ll.remove (15));
         lnprint ("remove (5) = "+ ll.remove (5));
@@ -73,5 +84,57 @@ public class ListsApp {
         lnprint (ll.toString());
         ll.clear();
         lnprint ("clear() -> "+ ll.toString());
+    }
+
+    static void testIntAddition (int n, MyLinkedList<Integer> ll, LinkedList<Integer> jll, boolean testType) {
+        Random r = new Random(47);
+        long start, finish;
+        boolean b = testType == ADD_TO_MIDDLE_TEST;
+        String className;
+        int logstep = 10_000;
+
+        if (ll != null) {
+            className = ll.getClass().getSimpleName();
+            start = System.currentTimeMillis();
+            for (int i=0, j;  i<n;  i++) {
+                if (b) {
+                    ll.add (j=i>>1, r.nextInt ());
+                    if (j % logstep == 0 && (i&1) == 0)
+                        System.out.print(j+" ");
+                } else
+                    ll.add (r.nextInt ());
+            }
+            finish = System.currentTimeMillis();
+            if (b) lnprint (className +" - добавление "+n+" элементов в середину списка: "+ (finish - start) + " мс\n");
+            else {
+                lnprint (className +" - добавление "+n+" элементов: "+ (finish - start) + " мс");
+                start = System.currentTimeMillis();
+                ll.get(n>>1);
+                finish = System.currentTimeMillis();
+                lnprint (className +" - переход к элементу "+n/2+" выполнен за: "+ (finish - start) + " мс");
+            }
+        }
+
+        if (jll != null) {
+            className = jll.getClass().getSimpleName();
+            start = System.currentTimeMillis();
+            for (int i=0, j;  i<n;  i++) {
+                if (b) {
+                    jll.add (j=i>>1, r.nextInt ());
+                    if (j % logstep == 0 && (i&1) == 0)
+                        System.out.print(j+" ");
+                } else
+                    jll.add (r.nextInt ());
+            }
+            finish = System.currentTimeMillis();
+            if (b) lnprint (className +" - добавление "+n+" элементов в середину списка: "+ (finish - start) + " мс");
+            else {
+                lnprint (className +" - добавление "+n+" элементов: "+ (finish - start) + " мс");
+                start = System.currentTimeMillis();
+                jll.get(n>>1);
+                finish = System.currentTimeMillis();
+                lnprint (className +" - переход к элементу "+n/2+" выполнен за: "+ (finish - start) + " мс");
+            }
+        }
     }
 }

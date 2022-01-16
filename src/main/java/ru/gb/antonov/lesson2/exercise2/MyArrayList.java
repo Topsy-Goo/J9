@@ -15,7 +15,6 @@ public class MyArrayList<E> implements MyList<E> {
     private Object[] data;
     private float growFactor = 0.5f;
     static BigInteger bigmax = BigInteger.valueOf (Integer.MAX_VALUE);
-
 //-----------------------------------------------------------------
     public MyArrayList () {
         data = new Object[capacity];
@@ -33,7 +32,7 @@ public class MyArrayList<E> implements MyList<E> {
 
     @Override public boolean add (E e) {
         if (size >= capacity)
-            grow();
+            grow (growFactor);
         data [size++] = e;
         return true;
     }
@@ -45,13 +44,14 @@ public class MyArrayList<E> implements MyList<E> {
             add (e);
         else {
             if (size >= capacity)
-                grow();
+                grow (growFactor);
             System.arraycopy (data, index, data, index +1, size - index);
             size++;
             data [index] = e;
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override public E set (int index, E e) {
         if (index >= size || index < 0)
             throw new IllegalArgumentException();
@@ -60,6 +60,7 @@ public class MyArrayList<E> implements MyList<E> {
         return previous;
     }
 
+    @SuppressWarnings("unchecked")
     @Override public E get (int index) {
         if (index >= size || index < 0)
             throw new IllegalArgumentException();
@@ -74,6 +75,7 @@ public class MyArrayList<E> implements MyList<E> {
         return find (object) >= 0;
     }
 
+    @SuppressWarnings("unchecked")
     @Override public E removeAt (int index) {
         if (index >= size || index < 0)
             throw new IllegalArgumentException();
@@ -96,21 +98,35 @@ public class MyArrayList<E> implements MyList<E> {
         size = 0;
     }
 
+    @SuppressWarnings("unchecked")
     @Override public E[] toArray () {
         return Arrays.copyOf ((E[])data, capacity);
     }
 //-----------------------------------------------------------------
-    private void grow () {
-        if (BigInteger.valueOf (capacity).compareTo (bigmax) >= 0)
-            throw new OutOfMemoryError();
+/** Позволяет изменить значение drowFactor.
+@param gf новое значение для drowFactor.
+@return TRUE если {@code gf >= 0.1f;} */
+    public boolean setGrowFactor (float gf) {
+        boolean ok = gf > 0.1f;
+        if (ok)
+            growFactor = gf;
+        return ok;
+    }
 
-        BigInteger cap = BigDecimal.valueOf (growFactor)
-                                   .multiply (BigDecimal.valueOf (capacity))
-                                   .add (BigDecimal.valueOf (capacity))
-                                   .toBigInteger();
+    private void grow (float factor) {
+        if (factor > 0.0f) {
+            if (BigInteger.valueOf (capacity).compareTo (bigmax) >= 0)
+                throw new OutOfMemoryError();
 
-        capacity = (cap.compareTo (bigmax) < 0) ? cap.intValue() : bigmax.intValue();
-        data = Arrays.copyOf (data, capacity);
+            BigInteger cap = BigDecimal.valueOf (factor)
+                                       .multiply (BigDecimal.valueOf (capacity))
+                                       .add (BigDecimal.valueOf (capacity))
+                                       .toBigInteger();
+
+            capacity = (cap.compareTo (bigmax) < 0) ? cap.intValue() : bigmax.intValue();
+            data = Arrays.copyOf (data, capacity);
+        }
+        else throw new IllegalArgumentException();
         //lnprint ("new capacity = "+ capacity);
     }
 

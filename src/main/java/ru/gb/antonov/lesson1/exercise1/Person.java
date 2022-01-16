@@ -6,10 +6,10 @@ import static ru.gb.antonov.Library.isStringValid;
 
 public class Person {
 
-    private String firstName;
+    private String firstName;   //< используется в hashCode()
     private String middleName;
-    private String lastName;   //< используется в hashCode()
-    private Integer age;       //< используется в hashCode()
+    private String lastName;    //< используется в hashCode()
+    private Integer age;
     private String gender;
     private String country;
     private String address;
@@ -105,15 +105,15 @@ public class Person {
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
         return age == (person.age.intValue())
-            && lastName.equals (person.lastName)
-            && firstName.equals (person.firstName)
-            && middleName.equals (person.middleName)
-            && gender.equals (person.gender)
-            && country.equals (person.country)
-            && address.equals (person.address)
-            && phone.equals (person.phone);
+               && middleName.equals (person.middleName)
+               && gender.equals (person.gender)
+               && country.equals (person.country)
+               && address.equals (person.address)
+               && phone.equals (person.phone)
+               && firstName.equals (person.firstName)
+               && lastName.equals (person.lastName);
     }
     @Override public int hashCode () {
-        return Objects.hash (lastName, age);
+        return Objects.hash (lastName, firstName);
     }
 }

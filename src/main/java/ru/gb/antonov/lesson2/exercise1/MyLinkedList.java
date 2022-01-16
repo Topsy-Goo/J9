@@ -7,25 +7,24 @@ import static ru.gb.antonov.Library.LIST_DELIMITER;
 public class MyLinkedList<E> implements MyList<E> {
 
     private int size;
-    private Node head, tail;
-    private final E[] empty = (E[]) new Object[]{};
+    private Node<E> head, tail;
+    private final E[] empty;
 //-----------------------------------------------------------------
-    public MyLinkedList () {}
+    @SuppressWarnings("unchecked")
+    public MyLinkedList () {
+        empty = (E[]) new Object[]{};
+    }
 //-----------------------------------------------------------------
     @Override public int size () { return size; }
 
     @Override public boolean isEmpty () { return size <= 0; }
 
     @Override public boolean add (E e) {
-        if (tail == null) {
-            tail = new Node (null, e, null);
-            head = tail;
-        }
-        else {
-            Node tmp = tail;
-            tail = new Node (tmp, e, null);
-            tmp.next = tail;
-        }
+        Node<E> n = new Node<> (tail, e, null);
+        if (tail == null)
+            head = tail = n;
+        else
+            tail = tail.next = n;
         size ++;
         return true;
     }
@@ -37,11 +36,13 @@ public class MyLinkedList<E> implements MyList<E> {
             add (e);
         else {
             if (index == 0)
-                head = new Node (null, e, head);
+                head = new Node<> (null, e, head);
             else {
-                Node right = goTo (index),
-                     left = right.prev;
-                right.prev = left.next = new Node (left, e, right);
+                Node<E> right = goTo (index),
+                        left = right.prev,
+                        n = new Node<> (left, e, right);
+                right.prev = n;
+                if (left != null)  left.next = n;
             }
             size ++;
         }
@@ -50,7 +51,7 @@ public class MyLinkedList<E> implements MyList<E> {
     @Override public E set (int index, E e) {
         if (index >= size || index < 0)
             throw new IllegalArgumentException();
-        Node n = goTo(index);
+        Node<E> n = goTo(index);
         E previous = n.element;
         n.element = e;
         return previous;
@@ -77,14 +78,14 @@ public class MyLinkedList<E> implements MyList<E> {
     }
 
     @Override public boolean remove (Object object) {
-        Node node = find (object);
+        Node<E> node = find (object);
         boolean ok = node != null;
         if (ok)  excludeNode (node);
         return ok;
     }
 
     @Override public void clear() {
-        Node node = head, tmp;
+        Node<E> node = head, tmp;
         while (node != null) {
             node.element = null;
             tmp = node;
@@ -97,11 +98,12 @@ public class MyLinkedList<E> implements MyList<E> {
         size = 0;
     }
 
+    @SuppressWarnings("unchecked")
     @Override public E[] toArray () {
         E[] result = empty;
         if (size > 0) {
             result = (E[]) new Object [size];
-            Node e = head;
+            Node<E> e = head;
             for (int i=0;  i<size;  i++) {
                 result[i] = e.element;
                 e = e.next;
@@ -110,11 +112,14 @@ public class MyLinkedList<E> implements MyList<E> {
         return result;
     }
 //-----------------------------------------------------------------
-    class Node {
-        Node prev, next;
+/* отсутствие модификатора static не позоляет выполнить добавление 100 000 000 элементов, —
+примерно через 60 сек. появляется ошибка OutOfMemoryError. С модификатором тест выполняется
+за 20 сек. */
+    private static class Node<E> {
+        Node<E> prev, next;
         E element;
 
-        Node (Node p, E e, Node n) {
+        Node (Node<E> p, E e, Node<E> n) {
             prev = p;
             next = n;
             element = e;
@@ -126,10 +131,10 @@ public class MyLinkedList<E> implements MyList<E> {
         }
     }
 
-    private Node goTo (int index) {
+    private Node<E> goTo (int index) {
 
-        boolean b = index < size/2;
-        Node result = b ? head : tail;
+        boolean b = index < (size >> 1);
+        Node<E> result = b ? head : tail;
         if (b) {
             while (index-- > 0)
                 result = result.next;
@@ -138,13 +143,14 @@ public class MyLinkedList<E> implements MyList<E> {
             for (int i=size-1;  i>index;  i--)
                 result = result.prev;
         }
+        //System.out.print(", goTo >> " + index);
         return result;
     }
 
     private int firstIndexOf (Object object) {
         int result = -1;
         int hashCode = (object == null) ? 0 : object.hashCode();
-        Node nd = head;
+        Node<E> nd = head;
 
         for (int i=0;  nd != null;  i++) {
             E e = nd.element;
@@ -163,8 +169,8 @@ public class MyLinkedList<E> implements MyList<E> {
         return result;
     }
 
-    private Node find (Object object) {
-        Node result = head;
+    private Node<E> find (Object object) {
+        Node<E> result = head;
         int hashCode = (object == null) ? 0 : object.hashCode();
 
         while (result != null) {
@@ -180,11 +186,11 @@ public class MyLinkedList<E> implements MyList<E> {
         return result;
     }
 
-    private E excludeNode (Node exclude) {
+    private E excludeNode (Node<E> exclude) {
         E result = null;
         if (exclude != null) {
             result = exclude.element;
-            Node prv = exclude.prev,
+            Node<E> prv = exclude.prev,
                  nxt = exclude.next;
             if (prv != null)   prv.next = nxt;    else head = nxt;
             if (nxt != null)   nxt.prev = prv;    else tail = prv;
@@ -195,7 +201,7 @@ public class MyLinkedList<E> implements MyList<E> {
 
     public String toString () {
         StringBuilder sb = new StringBuilder(this.getClass().getSimpleName()).append(".[");
-        for (Node n=head;  n!=null;  n=n.next) {
+        for (Node<E> n=head;  n!=null;  n=n.next) {
             if (n != head)
                 sb.append (LIST_DELIMITER);
             sb.append (n.element);
