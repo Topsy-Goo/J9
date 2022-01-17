@@ -10,11 +10,13 @@ import static ru.gb.antonov.Library.LIST_DELIMITER;
 
 public class MyArrayList<E> implements MyList<E> {
 
-    private int capacity = 10;
+    private int capacity = 10;  /*  Замечание преподавателя (проигнорировано) : можно вообще не использовать эту переменну. она всегда равна длине массива  */
     private int size;
     private Object[] data;
     private float growFactor = 0.5f;
     static BigInteger bigmax = BigInteger.valueOf (Integer.MAX_VALUE);
+/*  Замечание преподавателя (проигнорировано) : зачем эта статика, да еще и не final, если всегда есть константа по Integer.MAX_VALUE  */
+
 //-----------------------------------------------------------------
     public MyArrayList () {
         data = new Object[capacity];
@@ -118,6 +120,7 @@ public class MyArrayList<E> implements MyList<E> {
             if (BigInteger.valueOf (capacity).compareTo (bigmax) >= 0)
                 throw new OutOfMemoryError();
 
+/*  Замечание преподавателя (проигнорировано) : перемножение значения близкого к Integer.MAX_VALUE с 1.5f все равно выйдет за границу типа. сделали сложные вычисления, но смысл их полностью потерян. с этим же успехом можно всегда перемножать обычные int и float с округлением и не заморачиваться сложными расчетами */
             BigInteger cap = BigDecimal.valueOf (factor)
                                        .multiply (BigDecimal.valueOf (capacity))
                                        .add (BigDecimal.valueOf (capacity))

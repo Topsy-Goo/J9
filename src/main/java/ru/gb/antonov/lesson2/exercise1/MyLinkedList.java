@@ -17,6 +17,7 @@ public class MyLinkedList<E> implements MyList<E> {
 //-----------------------------------------------------------------
     @Override public int size () { return size; }
 
+/*  Замечание преподавателя (проигнорировано) : он может быть меньше 0?  */
     @Override public boolean isEmpty () { return size <= 0; }
 
     @Override public boolean add (E e) {
@@ -63,11 +64,11 @@ public class MyLinkedList<E> implements MyList<E> {
         return goTo(index).element;
     }
 
-    @Override public int indexOf (Object object) {
+    @Override public int indexOf (E object) {
         return firstIndexOf (object);
     }
 
-    @Override public boolean contains (Object object) {
+    @Override public boolean contains (E object) {
         return firstIndexOf (object) >= 0;
     }
 
@@ -77,7 +78,7 @@ public class MyLinkedList<E> implements MyList<E> {
         return excludeNode (goTo (index));
     }
 
-    @Override public boolean remove (Object object) {
+    @Override public boolean remove (E object) {
         Node<E> node = find (object);
         boolean ok = node != null;
         if (ok)  excludeNode (node);
@@ -115,6 +116,8 @@ public class MyLinkedList<E> implements MyList<E> {
 /* отсутствие модификатора static не позоляет выполнить добавление 100 000 000 элементов, —
 примерно через 60 сек. появляется ошибка OutOfMemoryError. С модификатором тест выполняется
 за 20 сек. */
+
+/*  Замечание преподавателя (проигнорировано) : нода недоступна снаружи, нужно делать приватной. а вот статической нет смысла  */
     private static class Node<E> {
         Node<E> prev, next;
         E element;
@@ -147,7 +150,7 @@ public class MyLinkedList<E> implements MyList<E> {
         return result;
     }
 
-    private int firstIndexOf (Object object) {
+    private int firstIndexOf (E object) {
         int result = -1;
         int hashCode = (object == null) ? 0 : object.hashCode();
         Node<E> nd = head;
@@ -169,7 +172,7 @@ public class MyLinkedList<E> implements MyList<E> {
         return result;
     }
 
-    private Node<E> find (Object object) {
+    private Node<E> find (E object) {
         Node<E> result = head;
         int hashCode = (object == null) ? 0 : object.hashCode();
 
