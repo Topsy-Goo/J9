@@ -5,7 +5,8 @@ abstract public class Car {
     private String color;
     private String name;
 
-    protected void start() {    System.out.println ("Car starting");    }
+/*  Замечание преподавателя (недовыполненное задание — пропущенная ошибка в предложенном коде): открыть можно всем, а поехать только очень близким классам?  */
+    /*protected*/public void start() {    System.out.println ("Car starting");    }
 
     abstract void open();
 

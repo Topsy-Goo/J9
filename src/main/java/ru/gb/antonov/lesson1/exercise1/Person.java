@@ -16,24 +16,38 @@ public class Person {
     private String phone;
 
 //-------------------- Конструирование ---------------------------
-    private Person (String fname, String mname, String lname, int ag, String gend) {
-        if (!setFirstName (fname)
-         || !setMiddleName (mname)
+/*  Замечание преподавателя: логику этого конструктора лучше перенести в метод build() билдера.    */
+/*  Замечание преподавателя (проигнорировано): зачем то старательно сокращаете названия переменных. это плохая практика, проходили как один из антипаттернов - пишите целиком, чтобы было понятно. вы ничего не выиграете пытаюсь недописать пару символов    */
+    private Person (String fname, String lname) {
+     /*   if (!setFirstName (fname)
          || !setLastName (lname)
+         || !setMiddleName (mname)
          || !setAge (ag)
          || !setGender (gend))
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException();   */
     }
-
-    public static Builder newPerson (String fname, String mname, String lname, int ag, String gend) {
-        return new Builder (fname, mname, lname, ag, gend);
+/*  Замечание преподавателя: билдер в том числе помогает избавиться от большого количества аргументов в методе, которые усложняют внесение изменений. Стоит вам добавить еще один обязательный параметр и множество вхождений сломается и нужно будет искать где именно вставить аргумент. Билдер потому и создается обычно констурктором по умолчанию и потом заполняется. а уже при окончательной генерации можно завалидировать, что все нужные поля были инициированы.  */
+    public static Builder newPerson (String fname, String lname) {
+        return new Builder (fname, lname);
     }
 
     public static class Builder {
         private final Person person;
 
-        private Builder (String fname, String mname, String lname, int ag, String gend) {
-            person = new Person (fname, mname, lname, ag, gend);
+        private Builder (String fname, String lname) {
+            person = new Person (fname, lname);
+        }
+        public Builder withMiddleName (String value) {
+            if (!person.setMiddleName (value))    throw new IllegalArgumentException();
+            return this;
+        }
+        public Builder withAge (Integer value) {
+            if (!person.setAge (value))    throw new IllegalArgumentException();
+            return this;
+        }
+        public Builder withGender (String value) {
+            if (!person.setGender (value))    throw new IllegalArgumentException();
+            return this;
         }
         public Builder withCountry (String value) {
             if (!person.setCountry (value))    throw new IllegalArgumentException();
@@ -47,7 +61,18 @@ public class Person {
             if (!person.setPhone (value))    throw new IllegalArgumentException();
             return this;
         }
-        public Person build () { return person; }
+        public Person build () {
+            if (person.firstName  == null
+             || person.lastName   == null
+             || person.middleName == null
+             || person.age        == null
+             || person.gender     == null
+             || person.country    == null
+             || person.address    == null
+             || person.phone      == null
+             ) throw new IllegalArgumentException();
+            return person;
+        }
     }
 //-------------------- Геттеры и сеттеры -------------------------
     public String getFirstName () {  return firstName;  }
@@ -117,3 +142,6 @@ public class Person {
         return Objects.hash (lastName, firstName);
     }
 }
+/*
+    Замечания преподавателя:
+*/
