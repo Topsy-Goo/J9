@@ -19,14 +19,12 @@ public class Person {
 /*  Замечание преподавателя: логику этого конструктора лучше перенести в метод build() билдера.    */
 /*  Замечание преподавателя (проигнорировано): зачем то старательно сокращаете названия переменных. это плохая практика, проходили как один из антипаттернов - пишите целиком, чтобы было понятно. вы ничего не выиграете пытаюсь недописать пару символов    */
     private Person (String fname, String lname) {
-        firstName = fname;
-        lastName = lname;
-     /*   if (!setFirstName (fname)
-         || !setLastName (lname)
+        if (!setFirstName (fname)
+         || !setLastName (lname)/*
          || !setMiddleName (mname)
          || !setAge (ag)
-         || !setGender (gend))
-            throw new IllegalArgumentException();   */
+         || !setGender (gend)*/)
+            throw new IllegalArgumentException();
     }
 /*  Замечание преподавателя: билдер в том числе помогает избавиться от большого количества аргументов в методе, которые усложняют внесение изменений. Стоит вам добавить еще один обязательный параметр и множество вхождений сломается и нужно будет искать где именно вставить аргумент. Билдер потому и создается обычно констурктором по умолчанию и потом заполняется. а уже при окончательной генерации можно завалидировать, что все нужные поля были инициированы.  */
     public static Builder newPerson (String fname, String lname) {
@@ -127,6 +125,21 @@ public class Person {
         return ok;
     }
 //-------------------- Стандартные методы ------------------------
+/*    @Override public boolean equals (Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return
+        firstName.equals(person.firstName)
+        && lastName.equals(person.lastName)
+        && Objects.equals(middleName, person.middleName)
+        && Objects.equals(age, person.age)
+        && Objects.equals(gender, person.gender)
+        && Objects.equals(country, person.country)
+        && Objects.equals(address, person.address)
+        && Objects.equals(phone, person.phone);
+    }*/
+
     @Override public boolean equals (Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
