@@ -14,7 +14,7 @@ public class MyArrayList<E> implements MyList<E> {
     private int size;
     private Object[] data;
     private float growFactor = 0.5f;
-    static BigInteger bigmax = BigInteger.valueOf (Integer.MAX_VALUE);
+    static final BigInteger bigmax = BigInteger.valueOf (Integer.MAX_VALUE);
 /*  Замечание преподавателя (проигнорировано) : зачем эта статика, да еще и не final, если всегда есть константа по Integer.MAX_VALUE  */
 
 //-----------------------------------------------------------------
@@ -33,10 +33,16 @@ public class MyArrayList<E> implements MyList<E> {
     @Override public boolean isEmpty () {  return size <= 0;  }
 
     @Override public boolean add (E e) {
-        if (size >= capacity)
-            grow (growFactor);
-        data [size++] = e;
-        return true;
+        boolean ok = true;
+        try {
+            if (size >= capacity)
+                grow (growFactor);
+            data [size++] = e;
+        }
+        catch (RuntimeException exception) {
+            ok = false;
+        }
+        return ok;
     }
 
     @Override public void add (int index, E e) {
