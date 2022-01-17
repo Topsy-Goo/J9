@@ -157,6 +157,3 @@ public class Person {
         return Objects.hash (lastName, firstName);
     }
 }
-/*
-    Замечания преподавателя:
-*/
