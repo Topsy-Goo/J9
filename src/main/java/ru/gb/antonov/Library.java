@@ -8,5 +8,7 @@ public class Library {
         return s != null && !s.isBlank();
     }
 
-    public static void lnprint (String s) { System.out.print ("\n"+s);  }
+    public static void lnprint (Object s) { System.out.print ("\n"+s);  }
+    public static void print (Object s) { System.out.print (s);  }
+    public static void println (Object s) { System.out.print (s+"\n");  }
 }
