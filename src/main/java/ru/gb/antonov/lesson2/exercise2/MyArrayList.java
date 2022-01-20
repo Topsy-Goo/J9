@@ -5,10 +5,11 @@ import ru.gb.antonov.lesson2.MyList;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.RandomAccess;
 
 import static ru.gb.antonov.Library.LIST_DELIMITER;
 
-public class MyArrayList<E> implements MyList<E> {
+public class MyArrayList<E> implements MyList<E>, RandomAccess {
 
     private int capacity = 10;  /*  Замечание преподавателя (проигнорировано) : можно вообще не использовать эту переменну. она всегда равна длине массива  */
     private int size;
