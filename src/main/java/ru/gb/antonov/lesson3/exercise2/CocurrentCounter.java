@@ -17,8 +17,13 @@ public class CocurrentCounter {
 
     public void reset () {
         lock.lock();
-        reset0();
-        lock.unlock();
+        try {
+            reset0();
+        }
+        catch (Exception e) {e.printStackTrace();}
+        finally {
+            lock.unlock();
+        }
     }
 
     public void increase () {
