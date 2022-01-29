@@ -20,6 +20,7 @@
 
 	<modules>
 		<module>lesson5</module>
+		<module>lesson6</module>
 	</modules>
 
 	<properties>
