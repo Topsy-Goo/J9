@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Главная страница</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body marginwidth="100" style="font-size: 20pt">
+	<div class="container">
+		<br>
+		<h1 style="color: navy;">Панель навигации</h1>
+		<br>
+		<a th:href="@{'/showallstudents'}" class="btn btn-primary">К списку всех пунктов&nbsp;&gt;</a>
+		&nbsp;
+		<a th:href="@{'/create'}" class="btn btn-primary">Добавить пункт</a>
+	</div>
+</body>
+</html>

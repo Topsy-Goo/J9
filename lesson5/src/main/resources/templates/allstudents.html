@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+		   <!-- xmlns:th="" задаёт пространство имён. -->
+<head>
+	<meta charset="UTF-8">
+	<title>Все пункты</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"/>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+<body  marginwidth="100" style="font-size: 16pt">
+	<div class="container">
+		<br>
+		<h1 style="color: navy;">Все пункты</h1>
+		<br>
+		<a th:href="@{'/'}" class="btn btn-primary">&lt;&nbsp;На главную страницу</a>
+		&nbsp;
+		<a th:href="@{'/create'}" class="btn btn-primary">Добавить пункт</a>
+		&nbsp;
+		<a th:href="@{'/add1000'}" class="btn btn-success">Добавить 1000 пунктов</a>
+		<p><h3 th:text="${prompt}"></h3></p>	<!-- Место для сообщения. -->
+		<h4 th:text="${'всего студентов: ' + allthestudents.size()}"></h4>
+		<table class="table">
+				<tr	align="left">
+					<th>id</th>
+					<th>Имя</th>
+					<th colspan="3">Оценка</th>
+					<th> * </th>
+				<tr	align="left" th:each="student : ${allthestudents}" >
+					<td th:text="${student.id}"	></td>
+					<td th:text="${student.name}"></td>
+
+					<td><a th:href="@{'/decrease_mark/'+ ${student.id}}" class="btn btn-info"
+						   style="width: 30pt" title="Уменьшить оценку на 1">-</a></td>
+					<td th:text="${student.mark}"></td>
+					<td><a th:href="@{'/increase_mark/'+ ${student.id}}" class="btn btn-info"
+						   style="width: 30pt" title="Увеличить оценку на 1">+</a></td>
+
+					<td><a th:href="@{'/delete/' + ${student.id}}" class="btn btn-secondary">Удалить</a></td>
+				</tr>
+		</table>
+	</div>
+		<br>
+		&nbsp;
+		<br></body>
+</html>
