@@ -6,12 +6,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet (name = "HelloServlet", urlPatterns = "/")
+@WebServlet (name = "HelloServlet", urlPatterns = "/hello")
 public class HelloServlet extends HttpServlet
 {
-    // http://localhost:8080/hello
+    // http://localhost:8080/j9l6/hello
 
     @Override protected void doGet (HttpServletRequest requ, HttpServletResponse resp) throws IOException {
-        resp.getWriter().printf("Hello, World!");
+        resp.getWriter().printf("<h2>Привет, Мир!</h2>");
     }
 }

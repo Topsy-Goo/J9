@@ -30,7 +30,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>hello</finalName>
+		<finalName>j9l6</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.wildfly.plugins</groupId>
