@@ -22,11 +22,11 @@
 
 	<dependencies>
 		<dependency>	<!-- Для использования Servlet API -->
-		<groupId>javax.servlet</groupId>
-		<artifactId>javax.servlet-api</artifactId>
-		<version>4.0.1</version>
-		<scope>provided</scope>	<!-- << означает, что полная реализация Servlet API будет предоставлена сервером приложений -->
-	</dependency> <!-- javax.servlet-api -->
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version>
+			<scope>provided</scope>	<!-- << означает, что полная реализация Servlet API будет предоставлена сервером приложений -->
+		</dependency> <!-- javax.servlet-api -->
 	</dependencies>
 
 	<build>
