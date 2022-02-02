@@ -35,8 +35,7 @@ public class App {
         boolean result  = false;
         Session session = null;
         try
-        {
-            //sql = Files.lines(Paths.get(fileName)).collect(Collectors.joining(" "));
+        {   //sql = Files.lines(Paths.get(fileName)).collect(Collectors.joining(" "));
             String sql = Files.readString (Paths.get ("db_students.sql"));
             session = sf.getCurrentSession();
             session.beginTransaction();
