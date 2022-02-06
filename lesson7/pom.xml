@@ -13,7 +13,6 @@
 	</parent>
 
 	<artifactId>lesson7</artifactId>
-	<packaging>war</packaging>
 	<name>j9l7</name>
 
 	<properties>
