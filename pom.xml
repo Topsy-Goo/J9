@@ -6,12 +6,16 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<parent><!-- lesson5 -->
+<!-- Блок <parent> закомментирован для чистоты эксперимента в lesson7. Роль блока отдана зависимости
+	 spring-boot-starter-parent в pom.xml модуля lesson5. Остальные модули в нём не нуждаются.
+	 Модули lesson5 и lesson6 работают нормально.
+
+	<parent>&lt;!&ndash; lesson5 &ndash;&gt;
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.4</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+		<relativePath/> &lt;!&ndash; lookup parent from repository &ndash;&gt;
+	</parent>-->
 
 	<groupId>ru.gb.antonov</groupId>
 	<artifactId>J9</artifactId>
@@ -21,6 +25,7 @@
 	<modules>
 		<module>lesson5</module>
 		<module>lesson6</module>
+		<module>lesson7</module>
 	</modules>
 
 	<properties>

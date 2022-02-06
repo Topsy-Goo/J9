@@ -120,6 +120,7 @@ CREATE TABLE `tickets` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_id_schedule_in_tickets_idx` (`id_schedule`),
   CONSTRAINT `fk_id_schedule_in_tickets` FOREIGN KEY (`id_schedule`) REFERENCES `schedule` (`id`)
+  -- преподаватель добавил сюда уникальный индекс по : id_schedule + row + column
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `j9-4`.`tickets` (`id`,`id_schedule`,`row`,`column`) VALUES
@@ -190,7 +191,7 @@ WHERE p.pause_duration >= TIME(003000)
 
 -- з3: список фильмов, для каждого — с указанием общего числа посетителей за все время, среднего числа зрителей за сеанс и общей суммы сборов по каждому фильму (отсортировать по убыванию прибыли).
 -- Внизу таблицы должна быть строчка «итого», содержащая данные по всем фильмам сразу;
-SELECT	a.f_id `f_id`,
+SELECT	IF(GROUPING(a.f_id), " ", a.f_id) `f_id`,
         IF(GROUPING(a.f_id), "Итого", a.title) `title`,
 		@T := COUNT(a.t_id) `tickets_sold_total` ,
         SUM(a.price) `total_cache`,
@@ -206,7 +207,9 @@ FROM
 				ON f.id = sc.id_film
 	ORDER BY `f_id`
 ) a
-GROUP BY a.f_id WITH ROLLUP
+GROUP BY a.f_id WITH ROLLUP -- 'GROUP BY' автоматом сортирует по указанному столбцу, так что приходится
+							-- выбирать между сортировкой по прибыли и строчкой Итого. Этот недуг можно побороть только используя UNION ALL. Как это сделать, показано в файле преподавателя (в доп.мат к уроку 8).
+-- сейчас значение tickets_per_seance_average в строке Итого вычисляется правильно: общее количество билетов делится на количество всех сеасов (5/11=0,454545…). Если этот алгоритм нужно заменить, то в файле lesson4_a.sql есть вариант этого задания.
 ;
 
 -- з4: число посетителей и кассовые сборы, сгруппированные по времени начала фильма:

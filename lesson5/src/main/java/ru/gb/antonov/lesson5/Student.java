@@ -3,6 +3,7 @@ package ru.gb.antonov.lesson5;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import static ru.gb.antonov.lesson5.App.isStringValid;
 
@@ -12,17 +13,21 @@ public class Student implements Serializable {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     @Column(name="id") private Long id;
-
     @Column(name="name") private String name;
-
     @Column(name="mark") private Integer mark;
+    @Column(name="created_at") private LocalDateTime createdAt;
+    @Column(name="updated_at") private LocalDateTime updatedAt;
 
-    public Student () {}
-    public Student (String nm, Integer mrk) {    name = nm;    mark = mrk;    }
+    private Student () {}
+    public Student (String name, Integer mark) {
+        if (!setName (name) || !setMark (mark))
+            throw new IllegalArgumentException();
+    }
 
     public Long    getId ()   { return id; }
     public String  getName () { return name; }
     public Integer getMark () { return mark; }
+
     private void setId (Long value)      { id = value; }
 
     public boolean setName (String value)  {
